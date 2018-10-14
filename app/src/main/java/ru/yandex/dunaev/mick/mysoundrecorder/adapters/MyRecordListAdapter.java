@@ -14,12 +14,13 @@ import java.util.List;
 
 import ru.yandex.dunaev.mick.mysoundrecorder.R;
 import ru.yandex.dunaev.mick.mysoundrecorder.lists.MyObservableArrayList;
+import ru.yandex.dunaev.mick.mysoundrecorder.models.MyFileModel;
 
 public class MyRecordListAdapter extends RecyclerView.Adapter{
-    private MyObservableArrayList<String> fileNames;
+    private MyObservableArrayList<MyFileModel> fileNames;
     private RecyclerView mRecyclerView;
 
-    public MyRecordListAdapter(final MyObservableArrayList<String> fileNames) {
+    public MyRecordListAdapter(final MyObservableArrayList<MyFileModel> fileNames) {
         this.fileNames = fileNames;
         this.fileNames.setChangeListener(new MyObservableArrayList.IChangeListener() {
             @Override
@@ -51,7 +52,14 @@ public class MyRecordListAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
         CardView cv = (CardView)viewHolder.itemView;
         TextView textFileName = (TextView)cv.findViewById(R.id.file_name);
-        textFileName.setText(fileNames.get(i));
+        fileNames.get(i).generateMediaInfo();
+        String bitRate = fileNames.get(i).getBitRate();
+        String sampleRate = fileNames.get(i).getSampleRate();
+        String mime = fileNames.get(i).getMime();
+        String duration = fileNames.get(i).getDuration();
+
+
+        textFileName.setText(fileNames.get(i).getFile());
     }
 
     @Override

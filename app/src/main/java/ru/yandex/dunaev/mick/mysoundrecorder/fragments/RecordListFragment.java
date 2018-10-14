@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import ru.yandex.dunaev.mick.mysoundrecorder.R;
 import ru.yandex.dunaev.mick.mysoundrecorder.adapters.MyRecordListAdapter;
 import ru.yandex.dunaev.mick.mysoundrecorder.lists.MyObservableArrayList;
+import ru.yandex.dunaev.mick.mysoundrecorder.models.MyFileModel;
 
 
 /**
@@ -44,7 +45,7 @@ public class RecordListFragment extends Fragment {
             };
 
 
-    private MyObservableArrayList<String> fileList = new MyObservableArrayList<>();
+    private MyObservableArrayList<MyFileModel> fileList = new MyObservableArrayList<>();
     @BindView(R.id.recycler) RecyclerView mRecyclerView;
 
     public RecordListFragment() {
@@ -78,7 +79,7 @@ public class RecordListFragment extends Fragment {
         File[] files = directory.listFiles();
         for (File file : files)
         {
-            fileList.add(file.getName());
+            fileList.add(new MyFileModel(getActivity(),file.getName(),path + "/" + file.getName()));
         }
         fileList.onChangeList();
     }
