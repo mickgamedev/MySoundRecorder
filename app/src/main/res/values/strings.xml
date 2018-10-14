@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MySoundRecorder</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="page_record">Record</string>
+    <string name="page_record_list"> Record List</string>
+    <string name="record">Record</string>
+    <string name="record_list">Record list</string>
+</resources>
