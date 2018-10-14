@@ -5,7 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecordFragment">
+    tools:context=".fragments.RecordFragment">
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -16,7 +16,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/toogle_record_button"/>
+        android:id="@+id/toogle_record_button"
+        android:src="@drawable/ic_mic_none_black_24dp"/>
 
     <Chronometer
         android:id="@+id/chronometer"
@@ -43,5 +44,16 @@
         app:layout_constraintEnd_toEndOf="@+id/chronometer"
         app:layout_constraintStart_toStartOf="@+id/chronometer"
         app:layout_constraintTop_toTopOf="@+id/chronometer" />
+
+    <TextView
+        android:id="@+id/text_recording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/toogle_record_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

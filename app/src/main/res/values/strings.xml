@@ -8,4 +8,7 @@
     <string name="page_record_list"> Record List</string>
     <string name="record">Record</string>
     <string name="record_list">Record list</string>
+
+    <string name="recording">Recording</string>
+    <string name="default_file_name">record</string>
 </resources>

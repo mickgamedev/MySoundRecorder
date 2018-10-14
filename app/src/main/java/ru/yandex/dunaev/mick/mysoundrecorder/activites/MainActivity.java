@@ -1,19 +1,24 @@
-package ru.yandex.dunaev.mick.mysoundrecorder;
+package ru.yandex.dunaev.mick.mysoundrecorder.activites;
 
+import android.Manifest;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.yandex.dunaev.mick.mysoundrecorder.R;
+import ru.yandex.dunaev.mick.mysoundrecorder.controllers.MyRecordController;
+import ru.yandex.dunaev.mick.mysoundrecorder.fragments.RecordFragment;
+import ru.yandex.dunaev.mick.mysoundrecorder.fragments.RecordListFragment;
+import ru.yandex.dunaev.mick.mysoundrecorder.helpers.CheckPermissionHelper;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -30,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         setPagerAdapter();
 
         mTabLayout.setupWithViewPager(mPager);
-
     }
 
     private String getPageTitle(int i){
@@ -69,4 +73,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == CheckPermissionHelper.REQUEST_PERMISION_CODE) CheckPermissionHelper.onPermissionGranted(this,permissions);
+    }
 }
