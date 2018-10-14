@@ -7,6 +7,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
+import com.tfb.fbtoast.FBToast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,6 @@ public class CheckPermissionHelper {
 
     public static void onPermissionGranted(Activity activity, String[] permissions) {
         if(simpleCheckPermission(activity,permissions)) MyRecordController.onPermissionGranted();
-        else Toast.makeText(activity,"Permission failed",Toast.LENGTH_SHORT).show();
+        else FBToast.errorToast(activity,"Permission failed",FBToast.LENGTH_SHORT);
     }
 }

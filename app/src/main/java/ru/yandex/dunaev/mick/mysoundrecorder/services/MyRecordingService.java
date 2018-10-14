@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.tfb.fbtoast.FBToast;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -56,14 +58,13 @@ public class MyRecordingService extends Service {
         } catch (IOException e) {
             Log.e("MyRecordingService", "startRecording failed");
         }
-
     }
 
     private void stopRecording() {
         if(mRecorder == null) return;
         mRecorder.stop();
         mRecorder = null;
-        Toast.makeText(this,"Record " + mFilePath + " saved",Toast.LENGTH_SHORT).show();
+        FBToast.successToast(this,"Record " + mFilePath + " saved",FBToast.LENGTH_SHORT);
     }
 
     private void setFileNameAndPath() {
@@ -80,5 +81,4 @@ public class MyRecordingService extends Service {
             f = new File(mFilePath);
         } while (f.exists() && !f.isDirectory());
     }
-
 }

@@ -2,7 +2,9 @@ package ru.yandex.dunaev.mick.mysoundrecorder.fragments;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -10,8 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +25,7 @@ import ru.yandex.dunaev.mick.mysoundrecorder.R;
 import ru.yandex.dunaev.mick.mysoundrecorder.controllers.MyRecordController;
 import ru.yandex.dunaev.mick.mysoundrecorder.helpers.CheckPermissionHelper;
 import ru.yandex.dunaev.mick.mysoundrecorder.helpers.StringWaitHelper;
+import ru.yandex.dunaev.mick.mysoundrecorder.services.MyRecordingService;
 
 
 /**
@@ -29,6 +35,7 @@ public class RecordFragment extends Fragment {
 
     private MyRecordController mController = MyRecordController.getInstance();
     private StringWaitHelper stringHelper = null;
+    private Intent intent = null;
 
     @BindView(R.id.chronometer) Chronometer mChronometer;
     @BindView(R.id.text_recording) TextView textRecording;
@@ -52,6 +59,8 @@ public class RecordFragment extends Fragment {
 
         setControllerListener();
         setChronometerListener();
+
+        intent = new Intent(getActivity(), MyRecordingService.class);
         return v;
     }
 
@@ -84,16 +93,36 @@ public class RecordFragment extends Fragment {
                 stringHelper.reset();
                 textRecording.setVisibility(View.VISIBLE);
                 recordButton.setImageResource(R.drawable.ic_stop_black_24dp);
+                startService();
                 return true;
             }
 
             @Override
             public void onStop() {
                 Log.v("Record","stop");
+                stopService();
                 mChronometer.stop();
                 textRecording.setVisibility(View.GONE);
                 recordButton.setImageResource(R.drawable.ic_mic_none_black_24dp);
             }
         });
+    }
+
+    private void startService(){
+        if(intent == null) return;
+
+        File folder = new File(Environment.getExternalStorageDirectory() + "/MySoundRecorder");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        getActivity().startService(intent);
+        //держать экран включеным
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    private void stopService(){
+        if(intent == null) return;
+        getActivity().stopService(intent);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 }
