@@ -7,11 +7,13 @@ import android.media.MediaFormat;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.ScrollView;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 public class MyFileModel {
     private String file;
@@ -25,6 +27,9 @@ public class MyFileModel {
     private String duration = "Unknown";
     private boolean isGenerated = false;
 
+    private String dateCreated = "Unknown";
+    private String sizeOfFile = "Unknown";
+
     public MyFileModel(Context context, String file, String filePath) {
         this.file = file;
         this.filePath = filePath;
@@ -34,6 +39,14 @@ public class MyFileModel {
 
     public String getBitRate() {
         return bitRate;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public String getSizeOfFile() {
+        return sizeOfFile;
     }
 
     public String getSampleRate() {
@@ -68,6 +81,12 @@ public class MyFileModel {
         mime = getStringInfo(mf, MediaFormat.KEY_MIME);
         duration = getLongInfo(mf,MediaFormat.KEY_DURATION);
         duration = convertDuration(duration);
+
+        File f = new File(filePath);
+        sizeOfFile = String.format("%d KB",f.length() / 1024);
+        Date lastModDate = new Date(f.lastModified());
+        dateCreated = lastModDate.toString();
+
         isGenerated = true;
     }
 

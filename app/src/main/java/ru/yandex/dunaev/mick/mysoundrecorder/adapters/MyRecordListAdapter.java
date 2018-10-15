@@ -57,6 +57,22 @@ public class MyRecordListAdapter extends RecyclerView.Adapter{
         String sampleRate = fileNames.get(i).getSampleRate();
         String mime = fileNames.get(i).getMime();
         String duration = fileNames.get(i).getDuration();
+        String fileData = fileNames.get(i).getDateCreated();
+        String fileSize = fileNames.get(i).getSizeOfFile();
+
+        TextView textBitrate = (TextView)cv.findViewById(R.id.textBitrate);
+        TextView textSamplerate = (TextView) cv.findViewById(R.id.textSamplerate);
+        TextView textMime = (TextView)cv.findViewById(R.id.textMime);
+        TextView textDuration = (TextView)cv.findViewById(R.id.textDuration);
+        TextView textFileData = (TextView)cv.findViewById(R.id.textFileDate);
+        TextView textFileSize = (TextView)cv.findViewById(R.id.textFileSize);
+
+        textBitrate.setText("bitrate: " + bitRate);
+        textSamplerate.setText("samplerate: " + sampleRate);
+        textMime.setText(mime);
+        textDuration.setText(duration);
+        textFileData.setText(fileData);
+        textFileSize.setText(fileSize);
 
 
         textFileName.setText(fileNames.get(i).getFile());
