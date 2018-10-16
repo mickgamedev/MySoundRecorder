@@ -25,11 +25,16 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.pager) ViewPager mPager;
     @BindView(R.id.tabs) TabLayout mTabLayout;
 
+    private RecordFragment mRecordFragment = new RecordFragment();
+    private RecordListFragment mRecordListFragment = new RecordListFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        mRecordFragment.setFileObserver(mRecordListFragment.getiMyFileObserver());
 
         setSupportActionBar(mToolbar);
         setPagerAdapter();
@@ -53,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
             public Fragment getItem(int i) {
                 switch (i){
                     case 0:
-                        return new RecordFragment();
+                        return mRecordFragment;
                     case 1:
-                        return new RecordListFragment();
+                        return mRecordListFragment;
                 }
                 return null;
             }
@@ -76,5 +81,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == CheckPermissionHelper.REQUEST_PERMISION_CODE) CheckPermissionHelper.onPermissionGranted(this,permissions);
+        if(requestCode == CheckPermissionHelper.REQUEST_PERMISION_CODE_DATA) CheckPermissionHelper.onPermissionGrantedData(this,permissions);
     }
 }

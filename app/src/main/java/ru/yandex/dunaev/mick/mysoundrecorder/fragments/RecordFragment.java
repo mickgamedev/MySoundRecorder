@@ -41,7 +41,8 @@ public class RecordFragment extends Fragment {
     @BindView(R.id.text_recording) TextView textRecording;
     @BindView(R.id.toogle_record_button) FloatingActionButton recordButton;
 
-    private final String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final String[] permissions = new String[]{Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private RecordListFragment.IMyFileObserver fileObserver;
 
     public RecordFragment() {
         // Required empty public constructor
@@ -86,7 +87,7 @@ public class RecordFragment extends Fragment {
         mController.setListener(new MyRecordController.IRecordControlListener() {
             @Override
             public boolean onStart() {
-                if(!checkPermission()) return false;
+                if(!checkPermission()) return false;//если нет разрешений то ничего не делаем
                 Log.v("Record","start");
                 mChronometer.setBase(SystemClock.elapsedRealtime());
                 mChronometer.start();
@@ -105,16 +106,25 @@ public class RecordFragment extends Fragment {
                 textRecording.setVisibility(View.GONE);
                 recordButton.setImageResource(R.drawable.ic_mic_none_black_24dp);
             }
+
+            @Override
+            public void updateData() {
+                if(fileObserver != null) fileObserver.updateData();
+            }
         });
     }
 
     private void startService(){
         if(intent == null) return;
 
+        //в этом месте точно есть разрешение на запись данных
         File folder = new File(Environment.getExternalStorageDirectory() + "/MySoundRecorder");
         if (!folder.exists()) {
             folder.mkdir();
         }
+        //в этом месте будем считать что папка создана и есть разрешения на запись и чтение из нее
+        if(fileObserver != null) fileObserver.setFileObserver();
+
         getActivity().startService(intent);
         //держать экран включеным
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -124,5 +134,9 @@ public class RecordFragment extends Fragment {
         if(intent == null) return;
         getActivity().stopService(intent);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    public void setFileObserver(RecordListFragment.IMyFileObserver fileObserver){
+        this.fileObserver = fileObserver;
     }
 }

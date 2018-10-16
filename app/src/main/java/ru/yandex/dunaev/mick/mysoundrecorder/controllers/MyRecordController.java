@@ -13,9 +13,19 @@ public class MyRecordController {
         mController.onStart();
     }
 
+    public static void onPermissionGrantedData() {
+        if(mController == null || mController.listener == null) return;
+        mController.onUpdateData();
+    }
+
+    private void onUpdateData() {
+        if(listener != null) listener.updateData();
+    }
+
     public interface IRecordControlListener{
-        public boolean onStart();
-        public void onStop();
+        boolean onStart();
+        void onStop();
+        void updateData();
     }
 
     private boolean isRequestRecord = false;
