@@ -144,4 +144,8 @@ public class MyFileModel{
         }
         return info;
     }
+
+    public String getFilePath() {
+        return filePath;
+    }
 }
