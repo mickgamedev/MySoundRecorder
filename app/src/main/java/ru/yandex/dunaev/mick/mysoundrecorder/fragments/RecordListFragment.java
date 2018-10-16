@@ -26,23 +26,7 @@ import ru.yandex.dunaev.mick.mysoundrecorder.models.MyFileModel;
  */
 public class RecordListFragment extends Fragment {
 
-    private FileObserver observer =
-            new FileObserver(android.os.Environment.getExternalStorageDirectory().toString()
-                    + "/MySoundRecorder", FileObserver.CLOSE_WRITE | FileObserver.DELETE) {
-                // set up a file observer to watch this directory on sd card
-                @Override
-                public void onEvent(int event, String file) {
-                    switch (event){
-                        case FileObserver.CLOSE_WRITE:
-                            updateFileList();
-                            fileList.onInsertItem();
-                            break;
-                        case FileObserver.DELETE:
-                            //updateFileList();
-                            break;
-                    }
-                }
-            };
+    private FileObserver observer;
 
 
     private MyObservableArrayList<MyFileModel> fileList = new MyObservableArrayList<>();
@@ -50,6 +34,28 @@ public class RecordListFragment extends Fragment {
 
     public RecordListFragment() {
         // Required empty public constructor
+        File folder = new File(Environment.getExternalStorageDirectory() + "/MySoundRecorder");
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        observer =
+        new FileObserver(android.os.Environment.getExternalStorageDirectory().toString()
+                + "/MySoundRecorder", FileObserver.CLOSE_WRITE | FileObserver.DELETE) {
+            // set up a file observer to watch this directory on sd card
+            @Override
+            public void onEvent(int event, String file) {
+                switch (event){
+                    case FileObserver.CLOSE_WRITE:
+                        updateFileList();
+                        fileList.onInsertItem();
+                        break;
+                    case FileObserver.DELETE:
+                        //updateFileList();
+                        break;
+                }
+            }
+        };
     }
 
 
@@ -77,6 +83,7 @@ public class RecordListFragment extends Fragment {
         String path = Environment.getExternalStorageDirectory().toString()+"/MySoundRecorder";
         File directory = new File(path);
         File[] files = directory.listFiles();
+        if(files == null) return;
         for (File file : files)
         {
             fileList.add(new MyFileModel(getActivity(),file.getName(),path + "/" + file.getName()));
