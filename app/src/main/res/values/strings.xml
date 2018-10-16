@@ -11,4 +11,6 @@
 
     <string name="recording">Recording</string>
     <string name="default_file_name">record</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
 </resources>

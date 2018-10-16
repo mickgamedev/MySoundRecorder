@@ -74,7 +74,7 @@ public class MyRecordingService extends Service {
         do{
             count++;
             mFileName = getString(R.string.default_file_name)
-                    + "_" + count + ".mp4";
+                    + "_" + count + ".mp3";
             mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             mFilePath += "/MySoundRecorder/" + mFileName;
 

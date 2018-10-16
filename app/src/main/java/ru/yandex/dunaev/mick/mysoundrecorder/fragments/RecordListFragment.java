@@ -38,7 +38,7 @@ public class RecordListFragment extends Fragment {
                             fileList.onInsertItem();
                             break;
                         case FileObserver.DELETE:
-                            updateFileList();
+                            //updateFileList();
                             break;
                     }
                 }
