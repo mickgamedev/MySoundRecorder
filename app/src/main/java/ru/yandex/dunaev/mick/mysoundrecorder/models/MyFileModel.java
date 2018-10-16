@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ScrollView;
@@ -15,7 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
-public class MyFileModel {
+public class MyFileModel{
     private String file;
     private String filePath;
     private Context mContext;
@@ -29,6 +31,7 @@ public class MyFileModel {
 
     private String dateCreated = "Unknown";
     private String sizeOfFile = "Unknown";
+    private Date dateFile;
 
     public MyFileModel(Context context, String file, String filePath) {
         this.file = file;
@@ -86,8 +89,13 @@ public class MyFileModel {
         sizeOfFile = String.format("%d KB",f.length() / 1024);
         Date lastModDate = new Date(f.lastModified());
         dateCreated = lastModDate.toString();
+        dateFile = lastModDate;
 
         isGenerated = true;
+    }
+
+    public Date getDateFile() {
+        return dateFile;
     }
 
     private String convertDuration(String duration){

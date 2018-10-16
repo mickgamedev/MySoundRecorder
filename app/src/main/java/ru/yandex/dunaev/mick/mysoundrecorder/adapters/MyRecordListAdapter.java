@@ -3,16 +3,22 @@ package ru.yandex.dunaev.mick.mysoundrecorder.adapters;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.List;
 
 import ru.yandex.dunaev.mick.mysoundrecorder.R;
+import ru.yandex.dunaev.mick.mysoundrecorder.fragments.MyPlaybackFragment;
 import ru.yandex.dunaev.mick.mysoundrecorder.lists.MyObservableArrayList;
 import ru.yandex.dunaev.mick.mysoundrecorder.models.MyFileModel;
 
@@ -59,6 +65,13 @@ public class MyRecordListAdapter extends RecyclerView.Adapter{
         String duration = fileNames.get(i).getDuration();
         String fileData = fileNames.get(i).getDateCreated();
         String fileSize = fileNames.get(i).getSizeOfFile();
+        Date date = fileNames.get(i).getDateFile();
+
+        String dateString = DateUtils.formatDateTime(
+                cv.getContext(),
+                date.getTime(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_YEAR
+        );
 
         TextView textBitrate = (TextView)cv.findViewById(R.id.textBitrate);
         TextView textSamplerate = (TextView) cv.findViewById(R.id.textSamplerate);
@@ -71,15 +84,29 @@ public class MyRecordListAdapter extends RecyclerView.Adapter{
         textSamplerate.setText("samplerate: " + sampleRate);
         textMime.setText(mime);
         textDuration.setText(duration);
-        textFileData.setText(fileData);
+        textFileData.setText(dateString);
         textFileSize.setText(fileSize);
 
 
         textFileName.setText(fileNames.get(i).getFile());
+        setOnClickCard(cv,fileNames.get(i));
     }
 
     @Override
     public int getItemCount() {
         return fileNames.size();
+    }
+
+    private void setOnClickCard(View v, final MyFileModel fm){
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyPlaybackFragment pf = MyPlaybackFragment.newInstance(fm);
+                FragmentTransaction transaction = ((FragmentActivity) v.getContext())
+                        .getSupportFragmentManager()
+                        .beginTransaction();
+                pf.show(transaction,"dialog_playback");
+            }
+        });
     }
 }
